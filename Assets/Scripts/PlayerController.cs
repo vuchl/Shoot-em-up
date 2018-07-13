@@ -16,12 +16,54 @@ public class PlayerController : NetworkBehaviour
     public float tilt;
     public Boundary boundary;
 
+    [Header("Shooting")]
+    public Projectile projectilePrefab;
+    public Transform shotSpawn;
+    public float fireRate;
+
+    private float nextFire;
+
+    void Update()
+    {
+        if (isLocalPlayer)
+        {
+            CheckForProjectile();
+
+            
+        }
+    }
+
     private void FixedUpdate()
     {
         if (isLocalPlayer)
         {
             Move();
         }
+    }
+
+    private void CheckForProjectile()
+    {
+        if (Input.GetButton("Fire1") && Time.time > nextFire)
+        {
+            nextFire = Time.time + fireRate;
+            //This runs on the local authority client
+            CmdRequestProjectile(shotSpawn.position, gameObject);
+        }
+    }
+
+
+    [Command]
+    private void CmdRequestProjectile(Vector3 position, GameObject obj)
+    {
+        //This runs on the server
+        RpcSpawnProjectile(position);
+    }
+
+    [ClientRpc]
+    private void RpcSpawnProjectile(Vector3 position)
+    {
+        Projectile newProjectile = Instantiate(projectilePrefab);
+        newProjectile.InitProjectile(position, this);
     }
 
     void Move()
