@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [System.Serializable]
 public class Boundary
@@ -8,14 +9,22 @@ public class Boundary
     public float xMin, xMax, zMin, zMax;
 }
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     [Header("Movement")]
     public float speed;
     public float tilt;
     public Boundary boundary;
 
-    void FixedUpdate()
+    private void FixedUpdate()
+    {
+        if (isLocalPlayer)
+        {
+            Move();
+        }
+    }
+
+    void Move()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
