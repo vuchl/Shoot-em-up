@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour {
+public class Projectile : MonoBehaviour, IPooledObject
+{
 
     [SerializeField]
     private Rigidbody projectileRigidBody;
@@ -25,5 +26,10 @@ public class Projectile : MonoBehaviour {
         projectileInstigator = instigator;
 
         instigatorCollider = instigator.GetComponentInChildren<Collider>();
+    }
+
+    public void OnObjectSpawn()
+    {
+        projectileRigidBody.velocity = transform.forward * speed;
     }
 }

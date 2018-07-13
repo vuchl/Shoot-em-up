@@ -18,10 +18,17 @@ public class PlayerController : NetworkBehaviour
 
     [Header("Shooting")]
     public Projectile projectilePrefab;
-    public Transform shotSpawn;
+    public Transform shotSpawnPos;
     public float fireRate;
 
+    private ObjectPooler objectPooler;
     private float nextFire;
+
+
+    private void Start()
+    {
+        objectPooler = ObjectPooler.Instance;
+    }
 
     void Update()
     {
@@ -47,23 +54,22 @@ public class PlayerController : NetworkBehaviour
         {
             nextFire = Time.time + fireRate;
             //This runs on the local authority client
-            CmdRequestProjectile(shotSpawn.position, gameObject);
+            CmdRequestProjectile("Projectile", shotSpawnPos.position, Quaternion.identity);
         }
     }
 
 
     [Command]
-    private void CmdRequestProjectile(Vector3 position, GameObject obj)
+    private void CmdRequestProjectile(string tag, Vector3 position, Quaternion rotation)
     {
         //This runs on the server
-        RpcSpawnProjectile(position);
+        RpcSpawnProjectile(tag, position, rotation);
     }
 
     [ClientRpc]
-    private void RpcSpawnProjectile(Vector3 position)
+    private void RpcSpawnProjectile(string tag, Vector3 position, Quaternion rotation)
     {
-        Projectile newProjectile = Instantiate(projectilePrefab);
-        newProjectile.InitProjectile(position, this);
+        objectPooler.SpawnFromPool(tag, position, rotation);
     }
 
     void Move()
