@@ -10,15 +10,18 @@ public class EnemySpawner : NetworkBehaviour {
     public float spawnWait;
     public float startWait;
     public float waveWait;
+    public SpawnManager spawnManager;
 
     private ObjectPooler objectPooler;
+    
 
     void Start()
     {
-        objectPooler = ObjectPooler.Instance;
+
+        //objectPooler = ObjectPooler.Instance;
         StartCoroutine(SpawnWaves());
     }
-
+    
     IEnumerator SpawnWaves()
     {
         yield return new WaitForSeconds(startWait);
@@ -27,11 +30,21 @@ public class EnemySpawner : NetworkBehaviour {
             for (int i = 0; i < hazardCount; i++)
             {
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
-                Quaternion spawnRotation = Quaternion.Euler(0,180,0);
-                objectPooler.SpawnFromPool("Enemy", spawnPosition, spawnRotation);
+                CmdSpawn(spawnPosition);
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
         }
+    }
+
+    [Command]
+    void CmdSpawn(Vector3 spawnPosition)
+    {
+        // Set up enemy on server
+        var enemy = spawnManager.GetFromPool(spawnPosition);
+
+        // spawn enemy on client, custom spawn handler is called
+        NetworkServer.Spawn(enemy, spawnManager.assetId);
+        
     }
 }

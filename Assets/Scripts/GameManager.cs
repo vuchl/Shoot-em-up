@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using TMPro;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : NetworkBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public TextMeshProUGUI score;
+
+    public void GameOver()
+    {
+        RpcGameOver();
+    }
+
+    [ClientRpc]
+    private void RpcGameOver()
+    {
+        score.SetText("GameOver");
+    }
 }

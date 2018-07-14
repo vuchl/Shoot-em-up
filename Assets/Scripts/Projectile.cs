@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour, IPooledObject
+public class Projectile : MonoBehaviour
 {
 
     [SerializeField]
@@ -12,7 +12,12 @@ public class Projectile : MonoBehaviour, IPooledObject
     [SerializeField]
     private float speed;
 
-    public void OnObjectSpawn()
+    //public void OnObjectSpawn()
+    //{
+    //    projectileRigidBody.velocity = transform.forward * speed;
+    //}
+
+    private void OnEnable()
     {
         projectileRigidBody.velocity = transform.forward * speed;
     }

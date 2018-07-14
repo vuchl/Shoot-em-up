@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using RoboRyanTron.Unite2017.Events;
 
 [System.Serializable]
 public class Boundary
@@ -9,7 +10,7 @@ public class Boundary
     public float xMin, xMax, zMin, zMax;
 }
 
-public class PlayerController : NetworkBehaviour
+public class PlayerController : NetworkBehaviour, IDamageable
 {
     [Header("Movement")]
     public float speed;
@@ -21,13 +22,23 @@ public class PlayerController : NetworkBehaviour
     public Transform shotSpawnPos;
     public float fireRate;
 
+    [Header("Stats")]
+    [SerializeField]
+    private float maxHealth;
+
     private ObjectPooler objectPooler;
     private float nextFire;
 
+    public GameEvent PlayerDied;
+
+    [SyncVar]
+    private float currenthealth;
 
     private void Start()
     {
         objectPooler = ObjectPooler.Instance;
+
+        currenthealth = maxHealth;
     }
 
     void Update()
@@ -35,8 +46,6 @@ public class PlayerController : NetworkBehaviour
         if (isLocalPlayer)
         {
             CheckForProjectile();
-
-            
         }
     }
 
@@ -89,4 +98,36 @@ public class PlayerController : NetworkBehaviour
 
         GetComponent<Rigidbody>().rotation = Quaternion.Euler(0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
     }
+
+    // called by enemies
+    public void Damage(float damageAmount)
+    {
+        CmdDamage(damageAmount);
+    }
+
+    // damage comand send to server
+    [Command]
+    private void CmdDamage(float damageAmount)
+    {
+        RpcDamage(damageAmount);
+    }
+
+    // damage command send back to all clients
+    [ClientRpc]
+    private void RpcDamage(float damageAmount)
+    {
+        print("player taking damage");
+        print("damage amount: " + damageAmount);
+        print("currrent health: " + currenthealth);
+        currenthealth -= damageAmount;
+
+        if (currenthealth <= 0.0f)
+        {
+            PlayerDied.Raise();
+            print("Player died");
+            enabled = false;
+            gameObject.SetActive(false);
+        }
+    }
+
 }
