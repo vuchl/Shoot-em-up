@@ -6,16 +6,16 @@ using TMPro;
 
 public class GameManager : NetworkBehaviour {
 
-    public TextMeshProUGUI score;
+    //public TextMeshProUGUI score;
 
-    public void GameOver()
-    {
-        RpcGameOver();
-    }
+    //public void GameOver()
+    //{
+    //    RpcGameOver();
+    //}
 
-    [ClientRpc]
-    private void RpcGameOver()
-    {
-        score.SetText("GameOver");
-    }
+    //[ClientRpc]
+    //private void RpcGameOver()
+    //{
+    //    score.SetText("GameOver");
+    //}
 }

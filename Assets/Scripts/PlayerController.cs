@@ -105,7 +105,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         CmdDamage(damageAmount);
     }
 
-    // damage comand send to server
+    // damage command send to server
     [Command]
     private void CmdDamage(float damageAmount)
     {

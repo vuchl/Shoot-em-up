@@ -6,6 +6,7 @@ public class DeactivateOnCollision : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.LogError("Collision");
         gameObject.SetActive(false);
     }
 

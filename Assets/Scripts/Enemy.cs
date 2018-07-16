@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using RoboRyanTron.Unite2017.Events;
 
 public class Enemy : NetworkBehaviour {
 
@@ -13,7 +14,15 @@ public class Enemy : NetworkBehaviour {
     private SpawnManager spawnManager;
     [SerializeField]
     private float damageAmount;
+    [SerializeField]
+    private GameEvent EnemyDied;
 
+    private Health health;
+
+    private void Start()
+    {
+        health = GetComponent<Health>();
+    }
 
     public void OnEnable()
     {
@@ -25,6 +34,7 @@ public class Enemy : NetworkBehaviour {
     {
         if (NetworkServer.active)
         {
+            // Damage Player
             IDamageable damageable = other.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
@@ -32,7 +42,10 @@ public class Enemy : NetworkBehaviour {
                 damageable.Damage(damageAmount);
             }
         }
-
+        
+        print("enemy died");
+        if(other.tag != "KillPlane")
+            EnemyDied.Raise();
         // put enemy back into pool
         spawnManager.UnSpawnObject(gameObject);
         NetworkServer.UnSpawn(gameObject);
