@@ -42,6 +42,7 @@ public class EnemySpawner : NetworkBehaviour {
     {
         // Set up enemy on server
         var enemy = spawnManager.GetFromPool(spawnPosition);
+        enemy.transform.Rotate(0, 180, 0);
 
         // spawn enemy on client, custom spawn handler is called
         NetworkServer.Spawn(enemy, spawnManager.assetId);

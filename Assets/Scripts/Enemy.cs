@@ -18,7 +18,7 @@ public class Enemy : NetworkBehaviour {
     private GameEvent EnemyDied;
 
     private Health health;
-
+    
     private void Start()
     {
         health = GetComponent<Health>();
@@ -26,26 +26,32 @@ public class Enemy : NetworkBehaviour {
 
     public void OnEnable()
     {
-        gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-        enemyRigidBody.velocity = transform.forward * speed;
+        //gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
+        //enemyRigidBody.velocity = transform.forward * speed;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (NetworkServer.active)
-        {
-            // Damage Player
-            IDamageable damageable = other.GetComponentInParent<IDamageable>();
-            if (damageable != null)
-            {
-                print("Enemy attacks");
-                damageable.Damage(damageAmount);
-            }
-        }
+        print(other.name);
         
-        print("enemy died");
-        if(other.tag != "KillPlane")
+        if (other.tag == "KillPlane")
+            Kill();
+
+        if(other.tag == "Player")
+        {
             EnemyDied.Raise();
+            Kill();
+        }
+
+        if (health.currentHealth <= 0)
+        {
+            EnemyDied.Raise();
+            Kill();
+        }
+    }
+
+    public void Kill()
+    {
         // put enemy back into pool
         spawnManager.UnSpawnObject(gameObject);
         NetworkServer.UnSpawn(gameObject);

@@ -2,18 +2,24 @@
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
+using RoboRyanTron.Unite2017.Variables;
 
 public class Health : NetworkBehaviour
 {
-
-    public const int maxHealth = 100;
+    [SerializeField]
+    public FloatReference maxHealth;
 
     [SyncVar(hook = "OnChangeHealth")]
-    public int currentHealth = maxHealth;
+    public float currentHealth;
 
     public RectTransform healthBar;
 
-    public void TakeDamage(int amount)
+    private void OnEnable()
+    {
+        currentHealth = maxHealth.Value;
+    }
+
+    public void TakeDamage(float amount)
     {
         if (!isServer)
             return;
@@ -26,7 +32,7 @@ public class Health : NetworkBehaviour
         }
     }
 
-    void OnChangeHealth(int health)
+    void OnChangeHealth(float health)
     {
         healthBar.sizeDelta = new Vector2(health, healthBar.sizeDelta.y);
     }

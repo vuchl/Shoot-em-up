@@ -25,7 +25,6 @@ public class Projectile : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.LogError("Collision");
         gameObject.SetActive(false);
     }
 }

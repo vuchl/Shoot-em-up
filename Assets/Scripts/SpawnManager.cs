@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
     public int m_ObjectPoolSize = 5;
     public GameObject m_Prefab;
     public GameObject[] m_Pool;
-
+    
     public NetworkHash128 assetId { get; set; }
     
     public delegate GameObject SpawnDelegate(Vector3 position, NetworkHash128 assetId);

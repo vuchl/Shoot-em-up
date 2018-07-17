@@ -25,4 +25,9 @@ public class UIManager : NetworkBehaviour {
     {
         UpdateScoreUI(score);
     }
+
+    public void PrintEventTest(int test)
+    {
+        print("Test + " + test);
+    }
 }

@@ -16,7 +16,7 @@ namespace RoboRyanTron.Unite2017.Events
         public GameEvent Event;
 
         [Tooltip("Response to invoke when Event is raised.")]
-        public UnityEvent Response;
+        public CustomUnityEvent Response;
 
         private void OnEnable()
         {
@@ -30,7 +30,7 @@ namespace RoboRyanTron.Unite2017.Events
 
         public void OnEventRaised()
         {
-            Response.Invoke();
+            Response.Invoke(42);
         }
     }
 }
