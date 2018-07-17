@@ -28,9 +28,9 @@ namespace RoboRyanTron.Unite2017.Events
             Event.UnregisterListener(this);
         }
 
-        public void OnEventRaised()
+        public void OnEventRaised(GameObject sender)
         {
-            Response.Invoke(42);
+            Response.Invoke(sender);
         }
     }
 }

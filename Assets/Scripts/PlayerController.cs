@@ -123,7 +123,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
 
         if (currenthealth <= 0.0f)
         {
-            PlayerDied.Raise();
+            PlayerDied.Raise(gameObject);
             print("Player died");
             enabled = false;
             gameObject.SetActive(false);

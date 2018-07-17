@@ -39,13 +39,13 @@ public class Enemy : NetworkBehaviour {
 
         if(other.tag == "Player")
         {
-            EnemyDied.Raise();
+            EnemyDied.Raise(gameObject);
             Kill();
         }
 
         if (health.currentHealth <= 0)
         {
-            EnemyDied.Raise();
+            EnemyDied.Raise(gameObject);
             Kill();
         }
     }

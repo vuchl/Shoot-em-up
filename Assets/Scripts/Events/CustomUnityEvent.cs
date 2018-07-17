@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class CustomUnityEvent : UnityEvent<int>
+public class CustomUnityEvent : UnityEvent<GameObject>
 {
 
 }

@@ -21,7 +21,7 @@ namespace RoboRyanTron.Unite2017.Events
 
             GameEvent e = target as GameEvent;
             if (GUILayout.Button("Raise"))
-                e.Raise();
+                e.Raise(null);
         }
     }
 }
