@@ -13,7 +13,6 @@ public class UIManager : NetworkBehaviour {
     public void UpdateScore()
     {
         score++;
-        print(score);
     }
 
     public void UpdateScoreUI(int score)
@@ -26,8 +25,8 @@ public class UIManager : NetworkBehaviour {
         UpdateScoreUI(score);
     }
 
-    public void PrintEventTest(GameObject test)
+    public void TestEventSystem(GameObject go)
     {
-        print("Sender + " + test);
+        Debug.LogError("Game Event Triggered");
     }
 }

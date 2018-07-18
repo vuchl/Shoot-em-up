@@ -20,7 +20,7 @@ public class SpawnManager : MonoBehaviour
         for (int i = 0; i < m_ObjectPoolSize; ++i)
         {
             m_Pool[i] = (GameObject)Instantiate(m_Prefab, Vector3.zero, Quaternion.identity);
-            m_Pool[i].name = "PoolObject" + i;
+            m_Pool[i].name = m_Prefab.name + i;
             m_Pool[i].SetActive(false);
         }
         

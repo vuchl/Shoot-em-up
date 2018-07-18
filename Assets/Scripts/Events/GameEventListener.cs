@@ -7,10 +7,11 @@
 
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace RoboRyanTron.Unite2017.Events
 {
-    public class GameEventListener : MonoBehaviour
+    public class GameEventListener : NetworkBehaviour
     {
         [Tooltip("Event to register with.")]
         public GameEvent Event;

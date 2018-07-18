@@ -21,6 +21,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
     public Projectile projectilePrefab;
     public Transform shotSpawnPos;
     public float fireRate;
+    public SpawnManager bulletSpawnManager;
 
     [Header("Stats")]
     [SerializeField]
@@ -43,10 +44,6 @@ public class PlayerController : NetworkBehaviour, IDamageable
 
     void Update()
     {
-        if (isLocalPlayer)
-        {
-            CheckForProjectile();
-        }
     }
 
     private void FixedUpdate()
@@ -57,29 +54,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         }
     }
 
-    private void CheckForProjectile()
-    {
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
-            nextFire = Time.time + fireRate;
-            //This runs on the local authority client
-            CmdRequestProjectile("Projectile", shotSpawnPos.position, Quaternion.identity);
-        }
-    }
-
-
-    [Command]
-    private void CmdRequestProjectile(string tag, Vector3 position, Quaternion rotation)
-    {
-        //This runs on the server
-        RpcSpawnProjectile(tag, position, rotation);
-    }
-
-    [ClientRpc]
-    private void RpcSpawnProjectile(string tag, Vector3 position, Quaternion rotation)
-    {
-        objectPooler.SpawnFromPool(tag, position, rotation);
-    }
+ 
 
     void Move()
     {

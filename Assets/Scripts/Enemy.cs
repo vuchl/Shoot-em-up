@@ -24,16 +24,8 @@ public class Enemy : NetworkBehaviour {
         health = GetComponent<Health>();
     }
 
-    public void OnEnable()
-    {
-        //gameObject.transform.rotation = Quaternion.Euler(0, 180, 0);
-        //enemyRigidBody.velocity = transform.forward * speed;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        print(other.name);
-        
         if (other.tag == "KillPlane")
             Kill();
 
@@ -56,5 +48,4 @@ public class Enemy : NetworkBehaviour {
         spawnManager.UnSpawnObject(gameObject);
         NetworkServer.UnSpawn(gameObject);
     }
-
 }

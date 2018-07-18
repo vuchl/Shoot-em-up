@@ -13,10 +13,17 @@ public class GameManager : NetworkBehaviour {
     private GameObject explosionParticleSystem;
 
     // Spawn Particles for killed Enemies
-    [ClientRpc]
-    public void RpcSpawnParticleExplosion(GameObject sender)
+
+    public void SpawnParticleExplosion(GameObject sender)
     {
-        explosionParticleSystem = objectPooler.SpawnFromPool("EnemyExplosion", sender.transform.position, sender.transform.rotation);   // spawn Particles
+        if(isServer)
+            RpcSpawnParticleExplosion(sender.transform.position, sender.transform.rotation);
+    }
+
+    [ClientRpc]
+    private void RpcSpawnParticleExplosion(Vector3 position, Quaternion rotation)
+    {
+        explosionParticleSystem = objectPooler.SpawnFromPool("EnemyExplosion", position, rotation);   // spawn Particles
         StartCoroutine(RpcDeactivateParticleExplosion(explosionParticleSystem, explosionParticleSystem.GetComponent<ParticleSystem>().main.duration)); // call function to put particles back into pool
     }
 
@@ -26,19 +33,4 @@ public class GameManager : NetworkBehaviour {
         yield return new WaitForSeconds(delay);
         particleSystem.SetActive(false);
     }
-
-
-
-    //public TextMeshProUGUI score;
-
-    //public void GameOver()
-    //{
-    //    RpcGameOver();
-    //}
-
-    //[ClientRpc]
-    //private void RpcGameOver()
-    //{
-    //    score.SetText("GameOver");
-    //}
 }

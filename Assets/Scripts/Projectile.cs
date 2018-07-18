@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using RoboRyanTron.Unite2017.Events;
+
 public class Projectile : NetworkBehaviour
 {
     
@@ -9,6 +11,8 @@ public class Projectile : NetworkBehaviour
     private float damageAmount;
     [SerializeField]
     private float speed;
+    [SerializeField]
+    private GameEvent ProjectileExploded;
 
     private Rigidbody projectileRigidBody;
 
@@ -25,6 +29,6 @@ public class Projectile : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        gameObject.SetActive(false);
+        ProjectileExploded.Raise(gameObject);
     }
 }

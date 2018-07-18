@@ -11,14 +11,10 @@ public class EnemySpawner : NetworkBehaviour {
     public float startWait;
     public float waveWait;
     public SpawnManager spawnManager;
-
-    private ObjectPooler objectPooler;
     
 
     void Start()
     {
-
-        //objectPooler = ObjectPooler.Instance;
         StartCoroutine(SpawnWaves());
     }
     
@@ -42,7 +38,7 @@ public class EnemySpawner : NetworkBehaviour {
     {
         // Set up enemy on server
         var enemy = spawnManager.GetFromPool(spawnPosition);
-        enemy.transform.Rotate(0, 180, 0);
+        enemy.transform.eulerAngles = new Vector3(0, 180, 0);
 
         // spawn enemy on client, custom spawn handler is called
         NetworkServer.Spawn(enemy, spawnManager.assetId);
