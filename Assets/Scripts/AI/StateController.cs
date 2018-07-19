@@ -12,7 +12,7 @@ public class StateController : NetworkBehaviour {
     public Transform eyes;
 
     [HideInInspector] public NavMeshAgent navMeshAgent;
-    public Transform chaseTarget;
+    [HideInInspector] public Transform chaseTarget;
 
     private bool aiActive = true;
 

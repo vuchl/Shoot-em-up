@@ -12,8 +12,8 @@ public class Projectile : NetworkBehaviour
     [SerializeField]
     private float speed;
     [SerializeField]
-    private GameEvent ProjectileExploded;
-
+    private GameEvent ProjectileFiredEvent;
+    
     private Rigidbody projectileRigidBody;
 
     private void Awake()
@@ -23,12 +23,12 @@ public class Projectile : NetworkBehaviour
 
     private void OnEnable()
     {
-        
+        ProjectileFiredEvent.Raise(gameObject);
         projectileRigidBody.velocity = transform.forward * speed;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        ProjectileExploded.Raise(gameObject);
+        gameObject.SetActive(false);
     }
 }
