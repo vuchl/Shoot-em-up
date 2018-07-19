@@ -26,15 +26,18 @@ public class Enemy : NetworkBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        // collision with KillPlane
         if (other.tag == "KillPlane")
             Kill();
 
+        // collision with Player
         if(other.tag == "Player")
         {
             EnemyDied.Raise(gameObject);
             Kill();
         }
 
+        // zero Health
         if (health.currentHealth <= 0)
         {
             EnemyDied.Raise(gameObject);
@@ -42,6 +45,7 @@ public class Enemy : NetworkBehaviour {
         }
     }
 
+    // destroy Enemy
     public void Kill()
     {
         // put enemy back into pool
