@@ -10,7 +10,7 @@ public class Boundary
     public float xMin, xMax, zMin, zMax;
 }
 
-public class PlayerController : NetworkBehaviour
+public class PlayerController : NetworkBehaviour, IKillable
 {
     [Header("Movement")]
     public float speed;
@@ -19,11 +19,18 @@ public class PlayerController : NetworkBehaviour
 
     [Header("Events")]
     public GameEvent PlayerDied;
+    public GameEvent PlayerConnected;
 
     [SyncVar]
     private float currenthealth;
 
     private float nextFire;
+    
+    // Add Player to ActivePlayerList in GameManager
+    public override void OnStartClient()
+    {
+        PlayerConnected.Raise(gameObject);
+    }
 
     private void FixedUpdate()
     {
@@ -51,6 +58,13 @@ public class PlayerController : NetworkBehaviour
         );
 
         GetComponent<Rigidbody>().rotation = Quaternion.Euler(0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
+    }
+
+    // tell GameManager that Player died
+    public void OnKilled()
+    {
+        PlayerDied.Raise(gameObject);
+        gameObject.SetActive(false);
     }
 
 }

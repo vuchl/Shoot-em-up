@@ -6,7 +6,9 @@ using UnityEngine.Networking;
 
 public class UIManager : NetworkBehaviour {
 
-    public TextMeshProUGUI scoreTxt;
+    [SerializeField] private GameObject gameOverTxt;
+    [SerializeField] private TextMeshProUGUI scoreTxt;
+
     [SyncVar (hook = "OnScoreChange")]
     private int score;
 
@@ -25,8 +27,8 @@ public class UIManager : NetworkBehaviour {
         UpdateScoreUI(score);
     }
 
-    public void TestEventSystem(GameObject go)
+    public void DisplayGameOverTxt()
     {
-        Debug.LogError("Game Event Triggered");
+        gameOverTxt.gameObject.SetActive(true);
     }
 }

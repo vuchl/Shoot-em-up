@@ -46,7 +46,7 @@ public class EnemyShooting : NetworkBehaviour {
     [ClientRpc]
     private void RpcSpawnProjectile(Vector3 position)
     {
-        GameObject projectile = objectPooler.SpawnFromPool("EnemyProjectile", position, gameObject.transform.rotation);
+        objectPooler.SpawnFromPool("EnemyProjectile", position, gameObject.transform.rotation);
         EnemyProjectileFired.Raise(gameObject);
     }
 
