@@ -8,8 +8,6 @@ public class Projectile : NetworkBehaviour
 {
     [SerializeField]
     private float speed;
-    [SerializeField]
-    private GameEvent ProjectileFiredEvent;
     
     private Rigidbody projectileRigidBody;
 
@@ -20,7 +18,6 @@ public class Projectile : NetworkBehaviour
 
     private void OnEnable()
     {
-        ProjectileFiredEvent.Raise(gameObject);
         projectileRigidBody.velocity = transform.forward * speed;
     }
 

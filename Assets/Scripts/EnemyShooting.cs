@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using RoboRyanTron.Unite2017.Events;
 
 public class EnemyShooting : NetworkBehaviour {
 
     [SerializeField] private Transform shotSpawnPos;
     [SerializeField] private float fireRate;
+
+    public GameEvent EnemyProjectileFired;
 
     private ObjectPooler objectPooler;
     private float nextFire;
@@ -44,6 +47,7 @@ public class EnemyShooting : NetworkBehaviour {
     private void RpcSpawnProjectile(Vector3 position)
     {
         GameObject projectile = objectPooler.SpawnFromPool("EnemyProjectile", position, gameObject.transform.rotation);
+        EnemyProjectileFired.Raise(gameObject);
     }
 
 }

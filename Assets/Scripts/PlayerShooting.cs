@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using RoboRyanTron.Unite2017.Events;
 
 public class PlayerShooting : NetworkBehaviour
 {
 
     [SerializeField] private Transform shotSpawnPos;
     [SerializeField] private float fireRate;
+
+    public GameEvent PlayerProjectileFired;
 
     private ObjectPooler objectPooler;
     private float nextFire;
@@ -45,35 +48,7 @@ public class PlayerShooting : NetworkBehaviour
     private void RpcSpawnProjectile(Vector3 position)
     {
         objectPooler.SpawnFromPool("Projectile", position, Quaternion.identity);
+        PlayerProjectileFired.Raise(gameObject);
     }
-
-    //private void CheckForProjectile()
-    //{
-    //    if (!isLocalPlayer)
-    //        return;
-    //    if (Input.GetButton("Fire1") && Time.time > nextFire)
-    //    {
-    //        nextFire = Time.time + fireRate;
-    //        //This runs on the local authority client
-    //        CmdRequestProjectile(shotSpawnPos.position);
-    //    }
-    //}
-
-    //[Command]
-    //private void CmdRequestProjectile(Vector3 spawnPosition)
-    //{
-    //    var projectile = projectileSpawnManager.GetFromPool(spawnPosition);
-
-    //    // spawn enemy on client, custom spawn handler is called
-    //    NetworkServer.Spawn(projectile, projectileSpawnManager.assetId);
-    //}
-
-    //[Command]
-    //public void CmdUnspawnProjectile(GameObject projectile)
-    //{
-    //    // put enemy back into pool
-    //    projectileSpawnManager.UnSpawnObject(projectile);
-    //    NetworkServer.UnSpawn(projectile);
-    //}
 
 }
