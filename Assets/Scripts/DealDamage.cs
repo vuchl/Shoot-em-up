@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RoboRyanTron.Unite2017.Variables;
 
-public class TakeDamage : MonoBehaviour {
+public class DealDamage : MonoBehaviour {
 
     public FloatReference damageAmount;
 

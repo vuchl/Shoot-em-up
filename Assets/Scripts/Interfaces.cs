@@ -7,3 +7,8 @@ public interface IDamageable
 {
     void Damage(float damageAmount);
 }
+
+public interface IKillable
+{
+    void OnKilled();
+}

@@ -10,29 +10,58 @@ public class Health : NetworkBehaviour
     public FloatReference maxHealth;
 
     [SyncVar(hook = "OnChangeHealth")]
-    public float currentHealth;
+    [HideInInspector] public float currentHealth;
 
-    public RectTransform healthBar;
+    public Slider healthBarSlider;
+
+    private IKillable killable;
+
+    private void Start()
+    {
+        Reset();
+    }
 
     private void OnEnable()
     {
-        currentHealth = maxHealth.Value;
+        Reset();
     }
 
     public void TakeDamage(float amount)
     {
         if (!isServer)
             return;
-
+        
         currentHealth -= amount;
         if (currentHealth <= 0)
         {
+            print("Object dead");
             currentHealth = 0;
+            Kill();
         }
     }
 
-    void OnChangeHealth(float health)
+    void OnChangeHealth(float currentHealth)
     {
-        healthBar.sizeDelta = new Vector2(health, healthBar.sizeDelta.y);
+        healthBarSlider.value = currentHealth;
+        this.currentHealth = currentHealth;
     }
+
+    private void Reset()
+    {
+        currentHealth = maxHealth.Value;
+        healthBarSlider.minValue = 0;
+        healthBarSlider.maxValue = maxHealth;
+        healthBarSlider.value = maxHealth;
+    }
+
+    private void Kill()
+    {
+        IKillable killable = gameObject.GetComponentInParent<IKillable>();
+        if (killable != null)
+        {
+            killable.OnKilled();
+        }
+    }
+
+
 }

@@ -10,41 +10,20 @@ public class Boundary
     public float xMin, xMax, zMin, zMax;
 }
 
-public class PlayerController : NetworkBehaviour, IDamageable
+public class PlayerController : NetworkBehaviour
 {
     [Header("Movement")]
     public float speed;
     public float tilt;
     public Boundary boundary;
 
-    [Header("Shooting")]
-    public Projectile projectilePrefab;
-    public Transform shotSpawnPos;
-    public float fireRate;
-    public SpawnManager bulletSpawnManager;
-
-    [Header("Stats")]
-    [SerializeField]
-    private float maxHealth;
-
-    private ObjectPooler objectPooler;
-    private float nextFire;
-
+    [Header("Events")]
     public GameEvent PlayerDied;
 
     [SyncVar]
     private float currenthealth;
 
-    private void Start()
-    {
-        objectPooler = ObjectPooler.Instance;
-
-        currenthealth = maxHealth;
-    }
-
-    void Update()
-    {
-    }
+    private float nextFire;
 
     private void FixedUpdate()
     {
@@ -54,8 +33,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         }
     }
 
- 
-
+    // Player movement
     void Move()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
@@ -64,6 +42,7 @@ public class PlayerController : NetworkBehaviour, IDamageable
         Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
         GetComponent<Rigidbody>().velocity = movement * speed;
 
+        // restrict movement to boundaries
         GetComponent<Rigidbody>().position = new Vector3
         (
             Mathf.Clamp(GetComponent<Rigidbody>().position.x, boundary.xMin, boundary.xMax),
@@ -72,37 +51,6 @@ public class PlayerController : NetworkBehaviour, IDamageable
         );
 
         GetComponent<Rigidbody>().rotation = Quaternion.Euler(0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
-    }
-
-    // called by enemies
-    public void Damage(float damageAmount)
-    {
-        CmdDamage(damageAmount);
-    }
-
-    // damage command send to server
-    [Command]
-    private void CmdDamage(float damageAmount)
-    {
-        RpcDamage(damageAmount);
-    }
-
-    // damage command send back to all clients
-    [ClientRpc]
-    private void RpcDamage(float damageAmount)
-    {
-        print("player taking damage");
-        print("damage amount: " + damageAmount);
-        print("currrent health: " + currenthealth);
-        currenthealth -= damageAmount;
-
-        if (currenthealth <= 0.0f)
-        {
-            PlayerDied.Raise(gameObject);
-            print("Player died");
-            enabled = false;
-            gameObject.SetActive(false);
-        }
     }
 
 }

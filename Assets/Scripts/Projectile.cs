@@ -6,9 +6,6 @@ using RoboRyanTron.Unite2017.Events;
 
 public class Projectile : NetworkBehaviour
 {
-    
-    [SerializeField]
-    private float damageAmount;
     [SerializeField]
     private float speed;
     [SerializeField]
