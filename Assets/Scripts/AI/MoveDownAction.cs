@@ -14,7 +14,10 @@ public class MoveDownAction : Action {
 
     private void MoveDown(StateController controller)
     {
-        controller.navMeshAgent.Move(new Vector3(0,0,-1 * speed));
+        //controller.navMeshAgent.Move(new Vector3(0,0,-1 * speed));
+        controller.navMeshAgent.destination = new Vector3(controller.transform.position.x, 0, -5);
+        controller.navMeshAgent.velocity = controller.navMeshAgent.transform.forward * speed;
+        controller.navMeshAgent.isStopped = false;
     }
 
 }

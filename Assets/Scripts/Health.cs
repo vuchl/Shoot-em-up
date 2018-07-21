@@ -36,7 +36,7 @@ public class Health : NetworkBehaviour
         {
             print("Object dead");
             currentHealth = 0;
-            Kill();
+            RpcKill();
         }
     }
 
@@ -54,7 +54,8 @@ public class Health : NetworkBehaviour
         healthBarSlider.value = maxHealth;
     }
 
-    private void Kill()
+    [ClientRpc]
+    private void RpcKill()
     {
         IKillable killable = gameObject.GetComponentInParent<IKillable>();
         if (killable != null)

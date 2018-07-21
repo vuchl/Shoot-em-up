@@ -4,17 +4,21 @@ using UnityEngine;
 using UnityEngine.Networking;
 using TMPro;
 using RoboRyanTron.Unite2017.Events;
+using RoboRyanTron.Unite2017.Variables;
 
 public class GameManager : NetworkBehaviour {
 
     [Header("Events")]
     [SerializeField] private GameEvent GameOverEvent;
 
-    private List<GameObject> activePlayers = new List<GameObject>();
-
     [Header ("Enemy Exlosion Particles")]
     [SerializeField]
     private ObjectPooler objectPooler;
+
+    [Header("Score")]
+    [SerializeField] private FloatVariable highscore;
+
+    private List<GameObject> activePlayers = new List<GameObject>();
 
     private GameObject explosionParticleSystem;
 
@@ -39,6 +43,7 @@ public class GameManager : NetworkBehaviour {
         particleSystem.SetActive(false);
     }
 
+    // add connected Player to List
     public void PlayerConnected(GameObject player)
     {
         activePlayers.Add(player);
@@ -46,8 +51,14 @@ public class GameManager : NetworkBehaviour {
 
     public void PlayerDied(GameObject player)
     {
-        print("Player " + player.name + "died");
-        if(activePlayers.Contains(player))
+        RpcPlayerDied(player);
+    }
+
+    [ClientRpc]
+    private void RpcPlayerDied(GameObject player)
+    {
+        Debug.LogError("Player " + player.name + "died");
+        if (activePlayers.Contains(player))
         {
             activePlayers.Remove(player);
         }
@@ -59,6 +70,11 @@ public class GameManager : NetworkBehaviour {
     private void GameOver()
     {
         GameOverEvent.Raise(gameObject);
+    }
+
+    public void UpdateHighscore()
+    {
+
     }
 
 }

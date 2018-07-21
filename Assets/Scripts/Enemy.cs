@@ -23,12 +23,12 @@ public class Enemy : NetworkBehaviour, IKillable{
         if (other.tag == "KillPlane")
             Kill();
 
-        //// collision with Player
-        //if(other.tag == "Player")
-        //{
-        //    EnemyDied.Raise(gameObject);
-        //    Kill();
-        //}
+        // collision with Player
+        if (other.tag == "Player")
+        {
+            EnemyDied.Raise(gameObject);
+            Kill();
+        }
     }
 
     
