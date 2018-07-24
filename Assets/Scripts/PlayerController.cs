@@ -21,9 +21,6 @@ public class PlayerController : NetworkBehaviour, IKillable
     public GameEvent PlayerDied;
     public GameEvent PlayerConnected;
 
-    [SyncVar]
-    private float currenthealth;
-
     private float nextFire;
     
     // Add Player to ActivePlayerList in GameManager
@@ -58,6 +55,13 @@ public class PlayerController : NetworkBehaviour, IKillable
         );
 
         GetComponent<Rigidbody>().rotation = Quaternion.Euler(0.0f, 0.0f, GetComponent<Rigidbody>().velocity.x * -tilt);
+    }
+
+    // Kill Player when colliding with Obstacle
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Obstacle")
+            OnKilled();
     }
 
     // tell GameManager that Player died

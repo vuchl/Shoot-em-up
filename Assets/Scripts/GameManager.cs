@@ -57,7 +57,6 @@ public class GameManager : NetworkBehaviour {
     [ClientRpc]
     private void RpcPlayerDied(GameObject player)
     {
-        Debug.LogError("Player " + player.name + "died");
         if (activePlayers.Contains(player))
         {
             activePlayers.Remove(player);
@@ -71,10 +70,4 @@ public class GameManager : NetworkBehaviour {
     {
         GameOverEvent.Raise(gameObject);
     }
-
-    public void UpdateHighscore()
-    {
-
-    }
-
 }

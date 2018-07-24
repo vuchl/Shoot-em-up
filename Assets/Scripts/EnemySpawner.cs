@@ -26,15 +26,15 @@ public class EnemySpawner : NetworkBehaviour {
             for (int i = 0; i < hazardCount; i++)
             {
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
-                CmdSpawn(spawnPosition);
+                RpcSpawn(spawnPosition);
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
         }
     }
 
-    [Command]
-    void CmdSpawn(Vector3 spawnPosition)
+    [ClientRpc]
+    void RpcSpawn(Vector3 spawnPosition)
     {
         // Set up enemy on server
         var enemy = spawnManager.GetFromPool(spawnPosition);
