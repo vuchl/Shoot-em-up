@@ -13,3 +13,6 @@ Marius J. J. Schmücker | Universtity of Applied Sciences Darmstadt | For educat
 # MULTIPLAYER
 - first player: host the game and start right away
 - second player: just join the game whenever you want
+
+# MAIN THEME
+the awesome Main Theme was scored by my buddy Dennis Tjiok: dennis-tjiok.com
