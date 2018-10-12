@@ -30,8 +30,8 @@ namespace Cinemachine
             [Tooltip("The UnityEvent that will trigger the activation of this camera")]
             public string m_Event;
 
-            /// <summary>The virtual camera to activate whrn the animation state becomes active</summary>
-            [Tooltip("The virtual camera to activate whrn the animation state becomes active")]
+            /// <summary>The virtual camera to activate when the animation state becomes active</summary>
+            [Tooltip("The virtual camera to activate when the animation state becomes active")]
             public CinemachineVirtualCameraBase m_VirtualCamera;
 
             /// <summary>How much the priority will be temporarily boosted until the 
